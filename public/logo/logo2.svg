@@ -1,0 +1,320 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <!-- Updated vibrant red gradient with specified shades -->
+    <linearGradient id="ironManRedGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#CD0000" />
+      <stop offset="30%" stop-color="#B30000" />
+      <stop offset="60%" stop-color="#9A0000" />
+      <stop offset="100%" stop-color="#820000" />
+    </linearGradient>
+    
+    <!-- Rich copper gradient with warmer tones -->
+    <linearGradient id="copperGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFB062" />
+      <stop offset="40%" stop-color="#E08D45" />
+      <stop offset="70%" stop-color="#B87333" />
+      <stop offset="100%" stop-color="#8E5924" />
+    </linearGradient>
+    
+    <!-- Secondary copper for highlights -->
+    <linearGradient id="copperHighlight" x1="30%" y1="30%" x2="70%" y2="70%">
+      <stop offset="0%" stop-color="#FFCE9E" />
+      <stop offset="100%" stop-color="#DA8A67" />
+    </linearGradient>
+    
+    <!-- Crisp silver gradient -->
+    <linearGradient id="enhancedSilverGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#DDDDDD" />
+      <stop offset="45%" stop-color="#FFFFFF" />
+      <stop offset="55%" stop-color="#F5F5F5" />
+      <stop offset="100%" stop-color="#BBBBBB" />
+    </linearGradient>
+    
+    <!-- Dark metal with better definition -->
+    <linearGradient id="darkMetalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#444444" />
+      <stop offset="45%" stop-color="#555555" />
+      <stop offset="55%" stop-color="#555555" />
+      <stop offset="100%" stop-color="#333333" />
+    </linearGradient>
+    
+    <!-- Subtle shadow that won't dull the colors -->
+    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="3" stdDeviation="2" flood-opacity="0.25" flood-color="#111111"/>
+    </filter>
+    
+    <!-- Enhanced blue energy core light -->
+    <radialGradient id="energyCore" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#80FFFF" />
+      <stop offset="50%" stop-color="#40FFFF" />
+      <stop offset="80%" stop-color="#00BFFF" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#0091D4" stop-opacity="0.5" />
+    </radialGradient>
+    
+    <!-- Improved energy glow effect -->
+    <filter id="blueGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="5" result="blur" />
+      <feFlood flood-color="#00E0FF" flood-opacity="0.7" result="glowColor" />
+      <feComposite in="glowColor" in2="blur" operator="in" result="softGlow" />
+      <feMerge>
+        <feMergeNode in="softGlow" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    
+    <!-- Intense center glow -->
+    <filter id="intenseCenterGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feFlood flood-color="#FFFFFF" flood-opacity="0.9" result="glowColor" />
+      <feComposite in="glowColor" in2="blur" operator="in" result="softGlow" />
+      <feMerge>
+        <feMergeNode in="softGlow" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    
+    <!-- Subtle metallic reflection -->
+    <radialGradient id="lightReflection" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.9)" />
+      <stop offset="70%" stop-color="rgba(255,255,255,0)" />
+    </radialGradient>
+    
+    <!-- Improved triangle core light -->
+    <radialGradient id="triangleCoreLight" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="40%" stop-color="#80FFFF" />
+      <stop offset="60%" stop-color="#00E0FF" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#0091D4" stop-opacity="0.5" />
+    </radialGradient>
+  </defs>
+
+  <!-- Main reactor assembly - centered in viewBox and enlarged -->
+ <g transform="translate(200, 200) scale(1.75)">
+    <!-- Outer ring with updated Iron Man red finish and glow -->
+    <circle cx="0" cy="0" r="85" fill="url(#ironManRedGradient)" stroke="none" filter="url(#redGlow)">
+      <!-- Changed animation for a subtle pulse effect -->
+      <animate attributeName="opacity" values="0.95;1;0.95" dur="5s" repeatCount="indefinite" />
+    </circle>
+    
+    <!-- Inner housing with enhanced silver finish -->
+    <circle cx="0" cy="0" r="71" fill="url(#enhancedSilverGradient)" stroke="#CCCCCC" stroke-width="1.5">
+    </circle>
+    
+    <!-- Copper segments on outer ring with rotation -->
+    <g>
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="90s" repeatCount="indefinite" additive="sum" />
+      
+      <!-- 12 copper segments around the circle with enhanced visibility -->
+      <g transform="rotate(0)">
+        <rect x="60" y="-6" width="15" height="12" fill="url(#copperGradient)" stroke="#B87333" stroke-width="1" rx="2" ry="2" />
+        <rect x="60" y="-6" width="5" height="12" fill="url(#copperHighlight)" stroke="none" rx="2" ry="2" />
+      </g>
+      <g transform="rotate(30)">
+        <rect x="60" y="-6" width="15" height="12" fill="url(#copperGradient)" stroke="#B87333" stroke-width="1" rx="2" ry="2" />
+        <rect x="60" y="-6" width="5" height="12" fill="url(#copperHighlight)" stroke="none" rx="2" ry="2" />
+      </g>
+      <g transform="rotate(60)">
+        <rect x="60" y="-6" width="15" height="12" fill="url(#copperGradient)" stroke="#B87333" stroke-width="1" rx="2" ry="2" />
+        <rect x="60" y="-6" width="5" height="12" fill="url(#copperHighlight)" stroke="none" rx="2" ry="2" />
+      </g>
+      <g transform="rotate(90)">
+        <rect x="60" y="-6" width="15" height="12" fill="url(#copperGradient)" stroke="#B87333" stroke-width="1" rx="2" ry="2" />
+        <rect x="60" y="-6" width="5" height="12" fill="url(#copperHighlight)" stroke="none" rx="2" ry="2" />
+      </g>
+      <g transform="rotate(120)">
+        <rect x="60" y="-6" width="15" height="12" fill="url(#copperGradient)" stroke="#B87333" stroke-width="1" rx="2" ry="2" />
+        <rect x="60" y="-6" width="5" height="12" fill="url(#copperHighlight)" stroke="none" rx="2" ry="2" />
+      </g>
+      <g transform="rotate(150)">
+        <rect x="60" y="-6" width="15" height="12" fill="url(#copperGradient)" stroke="#B87333" stroke-width="1" rx="2" ry="2" />
+        <rect x="60" y="-6" width="5" height="12" fill="url(#copperHighlight)" stroke="none" rx="2" ry="2" />
+      </g>
+      <g transform="rotate(180)">
+        <rect x="60" y="-6" width="15" height="12" fill="url(#copperGradient)" stroke="#B87333" stroke-width="1" rx="2" ry="2" />
+        <rect x="60" y="-6" width="5" height="12" fill="url(#copperHighlight)" stroke="none" rx="2" ry="2" />
+      </g>
+      <g transform="rotate(210)">
+        <rect x="60" y="-6" width="15" height="12" fill="url(#copperGradient)" stroke="#B87333" stroke-width="1" rx="2" ry="2" />
+        <rect x="60" y="-6" width="5" height="12" fill="url(#copperHighlight)" stroke="none" rx="2" ry="2" />
+      </g>
+      <g transform="rotate(240)">
+        <rect x="60" y="-6" width="15" height="12" fill="url(#copperGradient)" stroke="#B87333" stroke-width="1" rx="2" ry="2" />
+        <rect x="60" y="-6" width="5" height="12" fill="url(#copperHighlight)" stroke="none" rx="2" ry="2" />
+      </g>
+      <g transform="rotate(270)">
+        <rect x="60" y="-6" width="15" height="12" fill="url(#copperGradient)" stroke="#B87333" stroke-width="1" rx="2" ry="2" />
+        <rect x="60" y="-6" width="5" height="12" fill="url(#copperHighlight)" stroke="none" rx="2" ry="2" />
+      </g>
+      <g transform="rotate(300)">
+        <rect x="60" y="-6" width="15" height="12" fill="url(#copperGradient)" stroke="#B87333" stroke-width="1" rx="2" ry="2" />
+        <rect x="60" y="-6" width="5" height="12" fill="url(#copperHighlight)" stroke="none" rx="2" ry="2" />
+      </g>
+      <g transform="rotate(330)">
+        <rect x="60" y="-6" width="15" height="12" fill="url(#copperGradient)" stroke="#B87333" stroke-width="1" rx="2" ry="2" />
+        <rect x="60" y="-6" width="5" height="12" fill="url(#copperHighlight)" stroke="none" rx="2" ry="2" />
+      </g>
+    </g>
+    
+    <!-- Silver inner ring - removed red accents that were between triangles -->
+    <circle cx="0" cy="0" r="54" fill="url(#darkMetalGradient)" stroke="#555555" stroke-width="2" />
+    
+    <!-- Enhanced stylish triangular copper dividing elements -->
+    <g>
+      <animateTransform attributeName="transform" type="rotate" from="0" to="-180" dur="85s" repeatCount="indefinite" additive="sum" />
+      
+      <!-- 8 enhanced triangular elements around the circle -->
+      <g transform="rotate(0)">
+        <path d="M0,0 L15,55 L-15,55 Z" fill="url(#copperGradient)" stroke="#B87333" stroke-width="1" />
+        <path d="M0,10 L5,55 L-5,55 Z" fill="url(#copperHighlight)" stroke="none" />
+      </g>
+      <g transform="rotate(45)">
+        <path d="M0,0 L15,55 L-15,55 Z" fill="url(#copperGradient)" stroke="#B87333" stroke-width="1" />
+        <path d="M0,10 L5,55 L-5,55 Z" fill="url(#copperHighlight)" stroke="none" />
+      </g>
+      <g transform="rotate(90)">
+        <path d="M0,0 L15,55 L-15,55 Z" fill="url(#copperGradient)" stroke="#B87333" stroke-width="1" />
+        <path d="M0,10 L5,55 L-5,55 Z" fill="url(#copperHighlight)" stroke="none" />
+      </g>
+      <g transform="rotate(135)">
+        <path d="M0,0 L15,55 L-15,55 Z" fill="url(#copperGradient)" stroke="#B87333" stroke-width="1" />
+        <path d="M0,10 L5,55 L-5,55 Z" fill="url(#copperHighlight)" stroke="none" />
+      </g>
+      <g transform="rotate(180)">
+        <path d="M0,0 L15,55 L-15,55 Z" fill="url(#copperGradient)" stroke="#B87333" stroke-width="1" />
+        <path d="M0,10 L5,55 L-5,55 Z" fill="url(#copperHighlight)" stroke="none" />
+      </g>
+      <g transform="rotate(225)">
+        <path d="M0,0 L15,55 L-15,55 Z" fill="url(#copperGradient)" stroke="#B87333" stroke-width="1" />
+        <path d="M0,10 L5,55 L-5,55 Z" fill="url(#copperHighlight)" stroke="none" />
+      </g>
+      <g transform="rotate(270)">
+        <path d="M0,0 L15,55 L-15,55 Z" fill="url(#copperGradient)" stroke="#B87333" stroke-width="1" />
+        <path d="M0,10 L5,55 L-5,55 Z" fill="url(#copperHighlight)" stroke="none" />
+      </g>
+      <g transform="rotate(315)">
+        <path d="M0,0 L15,55 L-15,55 Z" fill="url(#copperGradient)" stroke="#B87333" stroke-width="1" />
+        <path d="M0,10 L5,55 L-5,55 Z" fill="url(#copperHighlight)" stroke="none" />
+      </g>
+    </g>
+    
+    <!-- Inner energy housing with pulse animation -->
+    <circle cx="0" cy="0" r="42" fill="url(#darkMetalGradient)" stroke="#00E0FF" stroke-width="1.5">
+      <animate attributeName="stroke-opacity" values="0.7;0.9;0.7" dur="3s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="0" cy="0" r="35" fill="#111111" stroke="#00E0FF" stroke-width="1.5" />
+    
+    <!-- Copper coil elements around the inner circle with enhanced visibility -->
+    <g>
+      <animate attributeName="opacity" values="0.9;1;0.9" dur="2.5s" repeatCount="indefinite" />
+      <!-- Top copper element -->
+      <g>
+        <path d="M-12,-28 L12,-28 L12,-24 L-12,-24 Z" fill="url(#copperGradient)" stroke="#B87333" stroke-width="0.5" />
+        <path d="M-12,-28 L0,-28 L0,-24 L-12,-24 Z" fill="url(#copperHighlight)" stroke="none" />
+      </g>
+      
+      <!-- Right copper element -->
+      <g>
+        <path d="M28,-12 L28,12 L24,12 L24,-12 Z" fill="url(#copperGradient)" stroke="#B87333" stroke-width="0.5" />
+        <path d="M28,-12 L28,0 L24,0 L24,-12 Z" fill="url(#copperHighlight)" stroke="none" />
+      </g>
+      
+      <!-- Bottom copper element -->
+      <g>
+        <path d="M-12,24 L12,24 L12,28 L-12,28 Z" fill="url(#copperGradient)" stroke="#B87333" stroke-width="0.5" />
+        <path d="M-12,24 L0,24 L0,28 L-12,28 Z" fill="url(#copperHighlight)" stroke="none" />
+      </g>
+      
+      <!-- Left copper element -->
+      <g>
+        <path d="M-28,-12 L-28,12 L-24,12 L-24,-12 Z" fill="url(#copperGradient)" stroke="#B87333" stroke-width="0.5" />
+        <path d="M-28,-12 L-28,0 L-24,0 L-24,-12 Z" fill="url(#copperHighlight)" stroke="none" />
+      </g>
+    </g>
+    
+    <!-- Triangular design elements -->
+    <g>
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="85s" repeatCount="indefinite" />
+      
+      <!-- Outer triangle elements -->
+      <path d="M0,-35 L8,-18 L-8,-18 Z" fill="#111111" stroke="#00E0FF" stroke-width="1" stroke-opacity="0.7" />
+      <path d="M0,35 L8,18 L-8,18 Z" fill="#111111" stroke="#00E0FF" stroke-width="1" stroke-opacity="0.7" />
+      <path d="M-35,0 L-18,8 L-18,-8 Z" fill="#111111" stroke="#00E0FF" stroke-width="1" stroke-opacity="0.7" />
+      <path d="M35,0 L18,8 L18,-8 Z" fill="#111111" stroke="#00E0FF" stroke-width="1" stroke-opacity="0.7" />
+    </g>
+    
+    <!-- Enhanced glowing energy field -->
+    <circle cx="0" cy="0" r="30" opacity="0.15" fill="url(#energyCore)">
+      <animate attributeName="r" values="30;32;30" dur="2s" repeatCount="indefinite" />
+      <animate attributeName="opacity" values="0.15;0.2;0.15" dur="3s" repeatCount="indefinite" />
+    </circle>
+    
+    <!-- Central core with triangle design -->
+    <circle cx="0" cy="0" r="25" fill="#111111" stroke="#00E0FF" stroke-width="1.5" stroke-opacity="0.7" filter="url(#blueGlow)">
+      <animate attributeName="stroke-width" values="1.5;2;1.5" dur="1.5s" repeatCount="indefinite" />
+    </circle>
+    
+    <!-- Multi-layer triangle design with improved glow -->
+    <g filter="url(#blueGlow)">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="30s" repeatCount="indefinite" />
+      
+      <!-- Outer triangle frame -->
+      <path d="M0,-22 L19,11 L-19,11 Z" fill="none" stroke="#00E0FF" stroke-width="1.5" stroke-opacity="0.8" />
+      
+      <!-- Second triangle layer -->
+      <path d="M0,-18 L15.6,9 L-15.6,9 Z" fill="url(#triangleCoreLight)" stroke="#FFFFFF" stroke-width="0.85" stroke-opacity="0.8">
+        <animate attributeName="stroke-opacity" values="0.7;0.9;0.7" dur="1.5s" repeatCount="indefinite" />
+      </path>
+      
+      <!-- Third triangle layer -->
+      <path d="M0,-14 L12.1,7 L-12.1,7 Z" fill="none" stroke="#00E0FF" stroke-width="1" stroke-opacity="0.8">
+      </path>
+      
+      <!-- Inner glowing triangle -->
+      <path d="M0,-10 L8.66,5 L-8.66,5 Z" fill="url(#triangleCoreLight)" stroke="#FFFFFF" stroke-width="0.75" stroke-opacity="0.8">
+        <animate attributeName="stroke-opacity" values="0.7;0.9;0.7" dur="1.5s" repeatCount="indefinite" />
+        <animate attributeName="fill-opacity" values="0.9;1;0.9" dur="1s" repeatCount="indefinite" />
+      </path>
+      
+      <!-- Vertical line through triangles -->
+      <line x1="0" y1="-22" x2="0" y2="11" stroke="#00E0FF" stroke-width="1" stroke-opacity="0.8" />
+      
+      <!-- Additional detailing lines -->
+      <line x1="-19" y1="11" x2="0" y2="0" stroke="#00E0FF" stroke-width="0.75" stroke-opacity="0.8" />
+      <line x1="19" y1="11" x2="0" y2="0" stroke="#00E0FF" stroke-width="0.75" stroke-opacity="0.8" />
+      
+      <!-- Additional triangular elements -->
+      <path d="M0,-22 L5,-15 L-5,-15 Z" fill="none" stroke="#00E0FF" stroke-width="0.75" stroke-opacity="0.8" />
+    </g>
+    
+    <!-- Improved central energy point with intense glow -->
+    <circle cx="0" cy="0" r="3" fill="#FFFFFF" filter="url(#intenseCenterGlow)">
+      <animate attributeName="r" values="3;4;3" dur="3s" repeatCount="indefinite" />
+      <animate attributeName="opacity" values="0.9;1;0.9" dur="1s" repeatCount="indefinite" />
+    </circle>
+    
+    <!-- Enhanced white energy core -->
+    <circle cx="0" cy="0" r="3" fill="#FFFFFF">
+      <animate attributeName="r" values="3;3.5;3" dur="0.8s" repeatCount="indefinite" />
+    </circle>
+    
+    <!-- Enhanced dynamic light reflections -->
+    <circle cx="-7" cy="-7" r="5" fill="url(#lightReflection)">
+      <animate attributeName="r" values="5;6;5" dur="3.5s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="5" cy="-3" r="3" fill="url(#lightReflection)">
+      <animate attributeName="r" values="3;4;3" dur="2.5s" repeatCount="indefinite" />
+    </circle>
+    
+    <!-- Energy field pulses -->
+    <circle cx="0" cy="0" r="15" fill="none" stroke="#00E0FF" stroke-width="0.5" stroke-opacity="0.3">
+      <animate attributeName="r" values="15;35;15" dur="3s" repeatCount="indefinite" />
+      <animate attributeName="stroke-opacity" values="0.5;0;0.5" dur="3s" repeatCount="indefinite" />
+    </circle>
+    
+    <!-- Additional energy field pulse -->
+    <circle cx="0" cy="0" r="15" fill="none" stroke="#FFFFFF" stroke-width="0.5" stroke-opacity="0.2">
+      <animate attributeName="r" values="15;40;15" dur="5s" repeatCount="indefinite" />
+      <animate attributeName="stroke-opacity" values="0.4;0;0.4" dur="5s" repeatCount="indefinite" />
+    </circle>
+  </g>
+</svg>
