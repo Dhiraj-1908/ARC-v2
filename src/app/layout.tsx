@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Dancing_Script, Inter } from "next/font/google";
+import { Suspense } from "react";
 import "./globals.css";
 
-// Load fonts with display: 'swap' for better loading performance
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -27,7 +27,6 @@ export const metadata: Metadata = {
   },
 };
 
-// Add viewport configuration separately
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -42,14 +41,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html 
-      lang="en" 
+    <html
+      lang="en"
       className={`${inter.variable} ${dancingScript.variable} overflow-x-hidden`}
       suppressHydrationWarning
     >
       <body className="font-inter antialiased w-full">
         <div className="max-w-[100vw] overflow-x-hidden">
-          {children}
+          <Suspense fallback={null}>
+            {children}
+          </Suspense>
         </div>
       </body>
     </html>
