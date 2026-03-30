@@ -24,6 +24,22 @@ async function getEmbedding(text: string): Promise<number[]> {
   return (await res.json()).data[0].embedding as number[];
 }
 
+// ✅ FIX 2: Smart token-budget trimmer instead of hardcoded slice(-6)
+function trimHistoryToTokenBudget(
+  history: { role: string; content: string }[],
+  maxTokens = 1500
+): { role: string; content: string }[] {
+  let budget = maxTokens;
+  const result: { role: string; content: string }[] = [];
+  for (let i = history.length - 1; i >= 0; i--) {
+    const approxTokens = Math.ceil(history[i].content.length / 4);
+    if (budget - approxTokens < 0) break;
+    budget -= approxTokens;
+    result.unshift(history[i]);
+  }
+  return result;
+}
+
 /**
  * Rewrite the user's query using chat history so follow-up questions
  * like "explain more" or "what about the second point?" are resolved
@@ -45,13 +61,14 @@ async function rewriteQuery(query: string, history: { role: string; content: str
 rewrite the follow-up into a fully self-contained search query that captures the user's intent. 
 Output ONLY the rewritten query, nothing else.`,
         },
-        ...history.slice(-6).map(m => ({ role: m.role, content: m.content })),
+        // ✅ FIX 3: use token budget instead of slice(-6) here too
+        ...trimHistoryToTokenBudget(history).map(m => ({ role: m.role, content: m.content })),
         { role: "user", content: `Follow-up question: "${query}"\n\nRewritten standalone query:` },
       ],
     }),
   });
 
-  if (!res.ok) return query; // fallback to original
+  if (!res.ok) return query;
   const data = await res.json();
   return data.choices?.[0]?.message?.content?.trim() ?? query;
 }
@@ -78,7 +95,7 @@ function rerankChunks(
       const keywordScore = totalWords > 0 ? matchCount / totalWords : 0;
 
       const chunkIndex = chunk.metadata?.chunk_index ?? 99;
-      const positionBonus = Math.max(0, 0.02 - chunkIndex * 0.001); // tiny boost for earlier chunks
+      const positionBonus = Math.max(0, 0.02 - chunkIndex * 0.001);
 
       const finalScore = chunk.similarity * 0.75 + keywordScore * 0.22 + positionBonus;
       return { ...chunk, finalScore };
@@ -95,6 +112,7 @@ export async function POST(req: NextRequest) {
     const db = createServiceClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 
     // 1. Fetch recent chat history for this document
+    // ✅ FIX 1: bumped from 10 → 20 so trimHistoryToTokenBudget has more to work with
     let chatHistory: { role: string; content: string }[] = [];
     try {
       let historyQuery = db
@@ -102,7 +120,7 @@ export async function POST(req: NextRequest) {
         .select("role, content")
         .eq("user_id", userId)
         .order("created_at", { ascending: false })
-        .limit(10);
+        .limit(20);
       if (documentId) historyQuery = historyQuery.eq("document_id", documentId);
       else historyQuery = historyQuery.is("document_id", null);
 
@@ -116,12 +134,12 @@ export async function POST(req: NextRequest) {
     // 3. Embed the rewritten query
     const queryEmbedding = await getEmbedding(rewrittenQuery);
 
-    // 4. Vector similarity search — fetch more candidates for re-ranking
+    // 4. Vector similarity search
     const { data: rawChunks, error: searchError } = await db.rpc("match_chunks", {
       query_embedding: queryEmbedding,
       match_user_id: userId,
       match_document_id: documentId ?? null,
-      match_count: 20, // fetch 20, re-rank, use top 6
+      match_count: 30,
     });
     if (searchError) throw new Error(`Similarity search failed: ${searchError.message}`);
     if (!rawChunks || rawChunks.length === 0) {
@@ -136,16 +154,20 @@ export async function POST(req: NextRequest) {
       .join("\n\n");
 
     // 6. Build messages: system + history + current query
-    const systemPrompt = `You are a precise research assistant. Answer the user's question using ONLY the provided document context.
-If the answer is not in the context, say so clearly. Be concise, structured, and cite chunk numbers when relevant.
+    // ✅ FIX 4 (system prompt): removed ONLY — model can now reason beyond the document
+    const systemPrompt = `You are an intelligent research assistant. Your primary source is the provided document context below.
+
+- For factual questions: answer using the document context, and cite chunk numbers when relevant.
+- For questions requiring inference, prediction, or analysis (e.g. salary estimates, quality judgments, recommendations): use the document as a foundation and apply your own knowledge to give a helpful, reasoned answer. Clearly indicate when you are going beyond the document.
+- If the document has no relevant info AND the question can't be answered from general knowledge, say so.
 
 DOCUMENT CONTEXT:
 ${context}`;
 
     const messages = [
       { role: "system", content: systemPrompt },
-      // Inject last 6 turns of real conversation for memory
-      ...chatHistory.slice(-6).map(m => ({ role: m.role, content: m.content })),
+      // ✅ FIX 3: token-budget trim instead of hardcoded slice(-6)
+      ...trimHistoryToTokenBudget(chatHistory).map(m => ({ role: m.role, content: m.content })),
       { role: "user", content: query },
     ];
 

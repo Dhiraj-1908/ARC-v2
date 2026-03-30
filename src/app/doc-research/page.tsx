@@ -589,14 +589,18 @@ setTimeout(() => {
         full += decoder.decode(value);
         setStreamingText(full);
       }
+     // AFTER
+      // Stop streaming bubble FIRST, then commit final message in same tick
+      setStreaming(false);
+      setStreamingText("");
       setMessages([...withUser, { role: "assistant", content: full }]);
       await saveMessage("assistant", full);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Something went wrong.";
+      setStreaming(false);
+      setStreamingText("");
       setMessages([...withUser, { role: "assistant", content: `Error: ${msg}` }]);
     }
-
-    setStreaming(false); setStreamingText("");
   };
 
   const activeDoc = documents.find(doc => doc.id === activeDocId);
