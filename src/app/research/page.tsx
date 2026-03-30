@@ -8,7 +8,7 @@ import LoadingScreen from "./loadingscreen";
 
 export default function Research() {
   const router = useRouter();
-  const { topic, questions, answers, isCompleted } = useDeepResearchStore();
+const { topic, questions, answers, isCompleted } = useDeepResearchStore();
   const [hasMounted, setHasMounted] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(false);
   
@@ -23,12 +23,12 @@ export default function Research() {
     
     // Check if user has completed the process
     if (!topic || !isCompleted || questions.length === 0 || answers.length < questions.length) {
-      // Redirect to home if requirements aren't met
-      router.replace('/');
-    } else {
-      // User is authorized to view the research page
-      setIsAuthorized(true);
-    }
+  // Redirect to home if requirements aren't met
+  router.replace('/');
+} else {
+  // User is authorized to view the research page
+  setIsAuthorized(true);
+}
   }, [topic, questions, answers, isCompleted, router, hasMounted]);
 
   // During SSR or before hydration check completes, show nothing
