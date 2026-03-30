@@ -105,6 +105,9 @@ const UserInput = ({ isDarkMode = true }: UserInputProps) => {
       }
       
       const data = await response.json();
+      if (!data || !Array.isArray(data.questions) || data.questions.length === 0) {
+  throw new Error("Invalid questions response from server");
+}
       setQuestions(data.questions);
       
       // Reset form
@@ -137,16 +140,16 @@ const UserInput = ({ isDarkMode = true }: UserInputProps) => {
 
   // Theme styles with improved contrast and accessibility
   const styles = {
-    inputBg: isDarkMode ? 'bg-gray-800' : 'bg-white',
-    inputBorder: isDarkMode ? 'border-gray-700' : 'border-gray-200',
-    inputText: isDarkMode ? 'text-white' : 'text-gray-800',
-    inputPlaceholder: isDarkMode ? 'placeholder:text-gray-400' : 'placeholder:text-gray-500',
-    inputFocus: isDarkMode ? 'focus:ring-blue-500 focus:border-blue-500' : 'focus:ring-blue-400 focus:border-blue-400',
+    inputBg: isDarkMode ? 'bg-white/[0.04]' : 'bg-white',
+    inputBorder: isDarkMode ? 'border-white/[0.08]' : 'border-gray-200',
+    inputText: isDarkMode ? 'text-gray-100' : 'text-gray-900',
+    inputPlaceholder: isDarkMode ? 'placeholder:text-gray-600' : 'placeholder:text-gray-400',
+    inputFocus: isDarkMode ? 'focus:border-red-500/40 focus:ring-0' : 'focus:ring-blue-400 focus:border-blue-400',
     buttonBg: isDarkMode 
-      ? 'bg-blue-600 hover:bg-blue-700' 
-      : 'bg-blue-500 hover:bg-blue-600',
+      ? 'bg-red-500/90 hover:bg-red-500' 
+      : 'bg-red-500 hover:bg-red-600',
     buttonDisabled: 'opacity-60 cursor-not-allowed',
-    iconColor: isDarkMode ? 'text-blue-400' : 'text-blue-500',
+    iconColor: isDarkMode ? 'text-red-500/60' : 'text-red-400',
     countText: isDarkMode ? 'text-gray-400' : 'text-gray-500',
     countWarning: 'text-amber-500',
     countLimit: 'text-red-500',
