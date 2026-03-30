@@ -4,6 +4,13 @@ export const MAX_SEARCH_RESULTS = 3; // Maximum number of search results
 export const MAX_CONTENT_CHARS = 20000; // Maximum number of characters in the content
 export const MAX_RETRY_ATTEMPTS = 3; // It is the number of times the model will try to call LLMs if it fails
 export const RETRY_DELAY_MS = 1000; // It is the delay in milliseconds between retries for the model to call LLMs
+// Add these to constants.ts
+export const MAX_TOKENS = {
+  PLANNING: 1000,
+  EXTRACTION: 800,
+  ANALYSIS: 1000,
+  REPORT: 4000,   // enough for a solid report, won't blow budget
+};
 
 // Model names
 export const MODELS = {
