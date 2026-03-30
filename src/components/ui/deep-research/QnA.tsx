@@ -1,12 +1,15 @@
 "use client";
-
 import React from 'react';
 import QuestionForm from './QuestionForm';
 
-const QnA = () => {
+interface QnAProps {
+  isDarkMode?: boolean;
+}
+
+const QnA = ({ isDarkMode = false }: QnAProps) => {
   return (
     <div>
-      <QuestionForm />
+      <QuestionForm isDarkMode={isDarkMode} />
     </div>
   );
 };
