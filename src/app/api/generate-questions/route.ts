@@ -41,9 +41,12 @@ export async function POST(req: Request) {
     console.log("Topic: ", topic);
     try{
            const questions = await clarifyResearchGoals(topic);
+           if (!questions) {
+  return NextResponse.json({ success: false, error: "Failed to generate questions" }, { status: 500 });
+}
            console.log("Questions: ", questions)
+return NextResponse.json(questions);
 
-           return NextResponse.json(questions)
     }
     catch(error){
         console.error("Error while generating questions: ", error)

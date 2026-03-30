@@ -8,7 +8,7 @@ import { delay } from "./utils";
 
 
 export async function callModel<T>({
-    model, prompt, system, schema, activityType = "generate"
+    model, prompt, system, schema, activityType = "generate" , maxTokens
 }: ModelCallOptions<T>,
 researchState: ResearchState,activityTracker: ActivityTracker ): Promise<T | string>{
 
@@ -24,7 +24,8 @@ researchState: ResearchState,activityTracker: ActivityTracker ): Promise<T | str
               model: openrouter(model),
               prompt,
               system,
-              schema: schema
+              schema: schema,
+              maxTokens,
             });
       
             researchState.tokenUsed += usage.totalTokens;
@@ -37,6 +38,7 @@ researchState: ResearchState,activityTracker: ActivityTracker ): Promise<T | str
                   model: openrouter(model),
                   prompt,
                   system,
+                  maxTokens,
                 });
       
                 researchState.tokenUsed += usage.totalTokens;

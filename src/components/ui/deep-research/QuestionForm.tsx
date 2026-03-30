@@ -4,69 +4,39 @@ import React, { useState, useEffect } from 'react';
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import { Textarea } from '../textarea';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { useDeepResearchStore } from '@/store/deepResearch';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
-  answer: z.string().min(1, "Answer is required!"),
+  answer: z.string().min(1, "Answer is required"),
 });
 
-const QuestionForm = () => {
-  const router = useRouter();
-  const { 
-    questions, 
-    currentQuestion, 
-    answers, 
-    setCurrentQuestion, 
-    setAnswers, 
-    setIsCompleted, 
-    isLoading, 
+interface QuestionFormProps {
+  isDarkMode?: boolean;
+}
+
+const QuestionForm = ({ isDarkMode = false }: QuestionFormProps) => {
+  const {
+    questions, currentQuestion, answers,
+    setCurrentQuestion, setAnswers, setIsCompleted, isLoading,
   } = useDeepResearchStore();
-  
-  // State for client-side rendering safety
+
   const [hasMounted, setHasMounted] = useState(false);
-  
-  // Set mounted state after hydration
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
-  
+
+  useEffect(() => { setHasMounted(true); }, []);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      answer: answers[currentQuestion] || "",
-    },
+    defaultValues: { answer: answers[currentQuestion] || "" },
   });
-  
-  // Update form value when currentQuestion changes
+
   useEffect(() => {
     if (!hasMounted) return;
-    
-    if (answers[currentQuestion]) {
-      form.setValue("answer", answers[currentQuestion]);
-    } else {
-      form.setValue("answer", "");
-    }
+    form.setValue("answer", answers[currentQuestion] || "");
   }, [currentQuestion, answers, form, hasMounted]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Update answers in store
+    if (!questions || questions.length === 0) return;
     const newAnswers = [...answers];
     newAnswers[currentQuestion] = values.answer;
     setAnswers(newAnswers);
@@ -74,94 +44,100 @@ const QuestionForm = () => {
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
-      // This is the key part - only set isCompleted to true
-      // when the user submits the final question
       setIsCompleted(true);
-      // Navigate to research page
-      router.push('/research');
     }
   }
 
-  // Handle case where there are no questions yet or component is not mounted
-  if (!hasMounted || !questions || questions.length === 0) {
-    return null;
-  }
+  if (!hasMounted || !questions || questions.length === 0) return null;
+
+  // Fix #2: progress based on completed questions, not current index
+  const progress = (currentQuestion / questions.length) * 100;
+  const isLast = currentQuestion === questions.length - 1;
+
+  // Theme
+  const dm = isDarkMode;
+  const questionText   = dm ? "text-gray-200"     : "text-gray-800";
+  const progressTrack  = dm ? "bg-white/[0.06]"   : "bg-gray-200";
+  const metaText       = dm ? "text-gray-400"      : "text-gray-500";
+  const textareaBg     = dm
+    ? "bg-white/[0.04] border-white/[0.08] text-gray-200 placeholder-gray-600 focus:border-red-500/40 focus:bg-white/[0.06]"
+    : "bg-white border-gray-300 text-gray-800 placeholder-gray-400 focus:border-red-400 focus:bg-white";
+  const prevBtn        = dm
+    ? "text-gray-500 hover:text-gray-300 hover:bg-white/[0.05]"
+    : "text-gray-500 hover:text-gray-700 hover:bg-gray-100";
 
   return (
-    <Card className='w-full max-w-[80vw] sm:max-w-[80vw] xl:max-w-[80vw] shadow-none'>
-      <CardHeader className='px-4 sm:px-5'>
-        <CardTitle className='text-base text-primary/50'>Question {currentQuestion + 1} of {questions.length}</CardTitle>
-      </CardHeader>
+    <div className="w-full space-y-5">
+      {/* Progress */}
+      <div className="flex items-center justify-between mb-1">
+        <span className={`text-[11px] font-medium ${metaText}`}>
+          Question {currentQuestion + 1} of {questions.length}
+        </span>
+        <span className={`text-[11px] ${metaText}`}>{Math.round(progress)}%</span>
+      </div>
+      <div className={`h-0.5 w-full ${progressTrack} rounded-full overflow-hidden`}>
+        <div
+          className="h-full bg-gradient-to-r from-red-500 to-red-400 rounded-full transition-all duration-500"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
 
-      <CardContent className='space-y-6 w-full px-4 sm:px-5'>
-        <p className='text-base'>{questions[currentQuestion]}</p>
-        
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="answer"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Textarea 
-                      placeholder="Type your answer here..." 
-                      {...field}
-                      className='px-4 py-2 text-base resize-none placeholder:text-sm border-black/20'
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+      {/* Question */}
+      <p className={`text-sm leading-relaxed font-medium pt-1 ${questionText}`}>
+        {questions[currentQuestion]}
+      </p>
 
-            <div className='flex justify-between items-center'>
-              <Button 
-                type="button" 
-                variant="outline"
-                onClick={() => {
-                  if (currentQuestion > 0) {
-                    // Save current answer before navigating
-                    const currentAnswer = form.getValues().answer;
-                    if (currentAnswer) {
-                      const newAnswers = [...answers];
-                      newAnswers[currentQuestion] = currentAnswer;
-                      setAnswers(newAnswers);
-                    }
-                    
-                    // Go to previous question
-                    setCurrentQuestion(currentQuestion - 1);
-                  }
-                }}
-                disabled={currentQuestion === 0 || isLoading}
-                className="flex items-center gap-2"
-              >
-                <ArrowLeft size={16} />
-                <span>Previous</span>
-              </Button>
+      {/* Answer textarea */}
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <textarea
+          {...form.register("answer")}
+          placeholder="Type your answer here…"
+          rows={3}
+          disabled={isLoading}
+          className={`w-full border rounded-xl px-4 py-3 text-sm outline-none transition-all resize-none leading-relaxed ${textareaBg}`}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              form.handleSubmit(onSubmit)();
+            }
+          }}
+        />
+        {form.formState.errors.answer && (
+          <p className="text-red-400 text-xs">{form.formState.errors.answer.message}</p>
+        )}
 
-              <Button 
-                type="submit"
-                disabled={isLoading}
-                className="flex items-center gap-2"
-              >
-                {currentQuestion === questions.length - 1 ? "Start Research" : "Next"}
-                <ArrowRight size={16} />
-              </Button>
-            </div>
-          </form>
-        </Form>
-
-        <div className='h-1 w-full bg-gray-200 rounded'>
-          <div 
-            className='h-1 bg-primary rounded transition-all duration-300'
-            style={{
-              width: `${((currentQuestion + 1) / questions.length) * 100}%`
+        {/* Navigation */}
+        <div className="flex items-center justify-between pt-1">
+          <button
+            type="button"
+            onClick={() => {
+              if (currentQuestion > 0) {
+                const cur = form.getValues().answer;
+                if (cur) {
+                  const na = [...answers];
+                  na[currentQuestion] = cur;
+                  setAnswers(na);
+                }
+                setCurrentQuestion(currentQuestion - 1);
+              }
             }}
-          />
+            disabled={currentQuestion === 0 || isLoading}
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs transition-all disabled:opacity-30 disabled:cursor-not-allowed ${prevBtn}`}
+          >
+            <ArrowLeft size={13} /> Previous
+          </button>
+
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold bg-red-500/90 hover:bg-red-500 text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isLast ? "Start Research" : "Next"}
+            <ArrowRight size={13} />
+          </button>
         </div>
-      </CardContent>
-    </Card>
+      </form>
+    </div>
   );
 };
 
