@@ -28,8 +28,12 @@ interface UserInputProps {
 }
 
 const UserInput = ({ isDarkMode = true }: UserInputProps) => {
-  const { setQuestions, setTopic } = useDeepResearchStore();
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+const { setQuestions, setTopic } = useDeepResearchStore();
+const resetStore = () => useDeepResearchStore.setState({
+  topic: "", questions: [], answers: [], currentQuestion: 0,
+  isCompleted: false, isLoading: false, activities: [],
+  sources: [], report: "", sessionId: null,
+});  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [charCount, setCharCount] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const MAX_CHARS = 300;
