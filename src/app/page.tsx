@@ -45,7 +45,8 @@ export default function Home() {
 
   const supabase = createClient();
   const searchParams = useSearchParams();
-  const { append, data } = useChat({ api: "/api/deep-research" });
+  // FIX: destructure setData so we can wipe stale streaming data between sessions
+  const { append, data, setData } = useChat({ api: "/api/deep-research" });
 
   const t = buildTheme(isDarkMode);
   const isGenerating = researchStarted && !activeSessionId && isLoading;
@@ -181,6 +182,9 @@ export default function Home() {
       topic: "", questions: [], answers: [], currentQuestion: 0,
       isCompleted: false, isLoading: false, activities: [], sources: [], report: "", sessionId: null,
     });
+    // FIX: clear stale useChat data so the previous session's activities/report
+    // don't bleed into the next research via useEffect([data])
+    setData([]);
     setResearchStarted(false);
     setActiveSessionId(null);
     setActiveSessionData(null);
