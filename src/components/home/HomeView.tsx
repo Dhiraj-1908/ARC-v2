@@ -44,9 +44,9 @@ export default function HomeView({
       )}
 
       {/* Logo + title */}
-      <div className="flex flex-col items-center mb-10">
-        <div className="relative w-16 h-16 mb-5">
-          <div className={`absolute inset-0 rounded-full ${isDarkMode ? "bg-red-500/15" : "bg-red-500/8"} blur-xl`} />
+      <div className="flex flex-col items-center mb-10 -mt-16">
+        <div className="relative w-48 h-48 mb-5">
+          <div className={`absolute inset-0 rounded-full ${isDarkMode ? "bg-red-500/25" : "bg-red-500/12"} blur-3xl scale-150`} />
           <Image src="/logo/logo2.svg" fill alt="ARC" priority />
         </div>
         <h1 className="flex items-center gap-3 mb-2">
