@@ -17,6 +17,6 @@ export const MODELS = {
   PLANNING: "openai/gpt-4.1-mini",   //openai/gpt-4.1-mini 
   EXTRACTION: "anthropic/claude-3-haiku",
   ANALYSIS: "anthropic/claude-3-haiku",
-  REPORT: "anthropic/claude-3.5-sonnet"
+  REPORT: "anthropic/claude-3-haiku"
   // REPORT: "anthropic/claude-3.7-sonnet:thinking",
 }; 

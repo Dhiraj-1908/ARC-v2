@@ -49,7 +49,9 @@ export default function Sidebar({
   return (
     <aside className={`${isOpen ? "w-60" : "w-0"} shrink-0 flex flex-col border-r ${t.sidebar} transition-all duration-300 overflow-hidden`}>
       <div className={`flex items-center justify-between px-4 py-4 border-b ${isDarkMode ? "border-white/[0.06]" : "border-gray-200"}`}>
-        <span className="text-red-500 font-bold text-base tracking-tight">ARC</span>
+        <Link href="/">
+          <span className="text-red-500 font-bold text-base tracking-tight cursor-pointer">ARC</span>
+        </Link>
         <button type="button" onClick={onNewResearch}
           className={`p-1.5 rounded-lg ${t.hover} ${t.muted} transition-all`} title="New Research">
           <Plus size={14} />
